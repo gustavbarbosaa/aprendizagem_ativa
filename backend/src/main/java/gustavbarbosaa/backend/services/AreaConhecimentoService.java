@@ -6,7 +6,6 @@ import gustavbarbosaa.backend.dtos.responses.AreaConhecimentoResponseDTO;
 import gustavbarbosaa.backend.dtos.responses.MinAreaConhecimentoResponseDTO;
 import gustavbarbosaa.backend.exceptions.NomeAreaConhecimentoExistenteException;
 import gustavbarbosaa.backend.exceptions.RecursoNaoEncontradoException;
-import gustavbarbosaa.backend.exceptions.RegraNegocioException;
 import gustavbarbosaa.backend.mappers.AreaConhecimentoMapper;
 import gustavbarbosaa.backend.repositories.AreaConhecimentoRepository;
 import jakarta.validation.Valid;
