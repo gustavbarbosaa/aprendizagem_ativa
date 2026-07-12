@@ -14,8 +14,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<MensagemErro> hadleRecursoNaoEncontradoException(RecursoNaoEncontradoException e) {
         MensagemErro response = new MensagemErro(
                 HttpStatus.NOT_FOUND,
-                e.getMessage(),
-                List.of(e.getMessage())
+                e.getMessage()
         );
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -25,8 +24,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<MensagemErro> hadleNomeAreaConhecimentoExistenteException(NomeAreaConhecimentoExistenteException e) {
         MensagemErro response = new MensagemErro(
                 HttpStatus.UNPROCESSABLE_CONTENT,
-                e.getMessage(),
-                List.of(e.getMessage())
+                e.getMessage()
         );
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(response);
@@ -36,8 +34,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<MensagemErro> hadleRegraNegocioException(RegraNegocioException e) {
         MensagemErro response = new MensagemErro(
                 HttpStatus.UNPROCESSABLE_CONTENT,
-                e.getMessage(),
-                List.of(e.getMessage())
+                e.getMessage()
         );
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(response);
