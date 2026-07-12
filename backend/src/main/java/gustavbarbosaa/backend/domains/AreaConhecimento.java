@@ -3,6 +3,8 @@ package gustavbarbosaa.backend.domains;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -26,8 +28,10 @@ public class AreaConhecimento {
     private boolean ativo = true;
 
     @Column(name = "criado_em", nullable = false)
+    @CreationTimestamp
     private LocalDateTime criadoEm;
 
     @Column(name = "atualizado_em")
+    @UpdateTimestamp
     private LocalDateTime atualizadoEm;
 }

@@ -1,3 +1,10 @@
 package gustavbarbosaa.backend.dtos.responses;
 
-public record AreaConhecimentoResponseDTO(String nome, String descricao, boolean ativo) { }
+import java.time.LocalDateTime;
+
+public record AreaConhecimentoResponseDTO(
+        String nome,
+        String descricao,
+        boolean ativo,
+        LocalDateTime criadoEm,
+        LocalDateTime atualizadoEm) { }

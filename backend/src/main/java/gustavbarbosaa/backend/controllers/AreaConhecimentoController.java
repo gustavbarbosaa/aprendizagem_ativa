@@ -32,12 +32,12 @@ public class AreaConhecimentoController {
     }
 
     @PostMapping
-    public ResponseEntity<AreaConhecimentoResponseDTO> cadastrar(AreaConhecimentoRequestDTO request) {
+    public ResponseEntity<AreaConhecimentoResponseDTO> cadastrar(@RequestBody AreaConhecimentoRequestDTO request) {
         return ResponseEntity.ok().body(areaConhecimentoService.criar(request));
     }
 
     @PatchMapping("/{id}/editar")
-    public ResponseEntity<AreaConhecimentoResponseDTO> editar(@PathVariable UUID id, AreaConhecimentoRequestDTO request) {
+    public ResponseEntity<AreaConhecimentoResponseDTO> editar(@PathVariable UUID id, @RequestBody AreaConhecimentoRequestDTO request) {
         return ResponseEntity.ok().body(areaConhecimentoService.editar(id, request));
     }
 
