@@ -2,6 +2,7 @@ package gustavbarbosaa.backend.controllers;
 
 import gustavbarbosaa.backend.dtos.requests.AreaConhecimentoRequestDTO;
 import gustavbarbosaa.backend.dtos.responses.AreaConhecimentoResponseDTO;
+import gustavbarbosaa.backend.dtos.responses.MinAreaConhecimentoResponseDTO;
 import gustavbarbosaa.backend.services.AreaConhecimentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class AreaConhecimentoController {
     }
 
     @PostMapping
-    public ResponseEntity<AreaConhecimentoResponseDTO> cadastrar(@RequestBody AreaConhecimentoRequestDTO request) {
+    public ResponseEntity<MinAreaConhecimentoResponseDTO> cadastrar(@RequestBody AreaConhecimentoRequestDTO request) {
         return ResponseEntity.ok().body(areaConhecimentoService.criar(request));
     }
 
