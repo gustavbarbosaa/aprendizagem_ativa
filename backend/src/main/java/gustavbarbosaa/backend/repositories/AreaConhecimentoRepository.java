@@ -8,4 +8,8 @@ import java.util.UUID;
 
 public interface AreaConhecimentoRepository extends JpaRepository<AreaConhecimento, UUID> {
     List<AreaConhecimento> findAllByAtivoTrue();
+
+    boolean existsByNomeIgnoreCaseAndAtivoTrue(String nome);
+
+    boolean existsByNomeIgnoreCaseAndAtivoTrueAndIdNot(String nome, UUID id);
 }
