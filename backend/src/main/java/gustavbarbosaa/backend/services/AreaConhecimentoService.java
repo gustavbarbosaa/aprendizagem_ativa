@@ -3,6 +3,7 @@ package gustavbarbosaa.backend.services;
 import gustavbarbosaa.backend.domains.AreaConhecimento;
 import gustavbarbosaa.backend.dtos.requests.AreaConhecimentoRequestDTO;
 import gustavbarbosaa.backend.dtos.responses.AreaConhecimentoResponseDTO;
+import gustavbarbosaa.backend.dtos.responses.MinAreaConhecimentoResponseDTO;
 import gustavbarbosaa.backend.exceptions.NomeAreaConhecimentoExistenteException;
 import gustavbarbosaa.backend.exceptions.RecursoNaoEncontradoException;
 import gustavbarbosaa.backend.exceptions.RegraNegocioException;
@@ -11,6 +12,7 @@ import gustavbarbosaa.backend.repositories.AreaConhecimentoRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -39,17 +41,19 @@ public class AreaConhecimentoService {
                 .toList();
     }
 
-    public AreaConhecimentoResponseDTO criar(@Valid AreaConhecimentoRequestDTO request) {
-        this.validaNomeEmAreasDeConhecimentoExistentes(request);
+    @Transactional
+    public MinAreaConhecimentoResponseDTO criar(@Valid AreaConhecimentoRequestDTO request) {
+        this.validaNomeEmAreasDeConhecimentoExistentes(request, null);
 
         AreaConhecimento areaConhecimento = areaConhecimentoMapper.toEntity(request);
-        return areaConhecimentoMapper.toDTO(areaConhecimentoRepository.save(areaConhecimento));
+        return areaConhecimentoMapper.toMinDTO(areaConhecimentoRepository.save(areaConhecimento));
     }
 
+    @Transactional
     public AreaConhecimentoResponseDTO editar(UUID id, @Valid AreaConhecimentoRequestDTO request) {
         AreaConhecimento areaConhecimento = this.buscaAreaConhecimentoPorId(id);
 
-        this.validaNomeEmAreasDeConhecimentoExistentes(request);
+        this.validaNomeEmAreasDeConhecimentoExistentes(request, id);
 
         areaConhecimento.setNome(request.nome());
         areaConhecimento.setDescricao(request.descricao());
@@ -57,9 +61,11 @@ public class AreaConhecimentoService {
         return areaConhecimentoMapper.toDTO(areaConhecimentoRepository.save(areaConhecimento));
     }
 
+    @Transactional
     public void remover(UUID id) {
         AreaConhecimento areaConhecimento = this.buscaAreaConhecimentoPorId(id);
         areaConhecimento.setAtivo(false);
+        areaConhecimentoRepository.save(areaConhecimento);
     }
 
     private AreaConhecimento buscaAreaConhecimentoPorId(UUID id) {
@@ -67,13 +73,15 @@ public class AreaConhecimentoService {
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Não foi possível encontrar a Área de conhecimento"));
     }
 
-    private void validaNomeEmAreasDeConhecimentoExistentes(AreaConhecimentoRequestDTO request) {
-        List<AreaConhecimentoResponseDTO> areasCadastradas = listarAtivos();
+    private void validaNomeEmAreasDeConhecimentoExistentes(AreaConhecimentoRequestDTO request, UUID id) {
+        boolean existeAreaComMesmoNome = areaConhecimentoRepository.existsByNomeIgnoreCaseAndAtivoTrue(request.nome());
 
-        areasCadastradas.forEach(areaConhecimentoResponseDTO -> {
-            if (areaConhecimentoResponseDTO.nome().equalsIgnoreCase(request.nome())) {
-                throw new NomeAreaConhecimentoExistenteException("Já existe uma área de conhecimento com este mesmo nome, utilize outro.");
-            }
-        });
+        if (id != null) {
+            existeAreaComMesmoNome = areaConhecimentoRepository.existsByNomeIgnoreCaseAndAtivoTrueAndIdNot(request.nome(), id);
+        }
+
+        if(existeAreaComMesmoNome) {
+            throw new NomeAreaConhecimentoExistenteException("Já existe uma área de conhecimento com este mesmo nome, utilize outro.");
+        }
     }
 }
