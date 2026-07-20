@@ -72,7 +72,7 @@ public class AreaConhecimentoService {
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Não foi possível encontrar a Área de conhecimento"));
     }
 
-    private void validaNomeEmAreasDeConhecimentoExistentes(AreaConhecimentoRequestDTO request, UUID id) {
+    public void validaNomeEmAreasDeConhecimentoExistentes(AreaConhecimentoRequestDTO request, UUID id) {
         boolean existeAreaComMesmoNome = areaConhecimentoRepository.existsByNomeIgnoreCaseAndAtivoTrue(request.nome());
 
         if (id != null) {
